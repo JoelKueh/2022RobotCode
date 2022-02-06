@@ -18,6 +18,12 @@ Shooter::Shooter() :
 
 void Shooter::InitSmartDashboard()
 {
-    Flywheel.InitSmartDashboardPID();
-    Elevator.InitSmartDashboardPID();
+    Flywheel.InitSmartDashboard();
+    Elevator.InitSmartDashboard();
+}
+
+void Shooter::GetSmartDashboard()
+{
+    Flywheel.GetSmartDashboard();
+    Elevator.GetSmartDashboard();
 }
