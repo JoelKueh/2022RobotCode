@@ -24,8 +24,8 @@ class EncodedMotor : public rev::CANSparkMax {
   EncodedMotor(char inputName[], int canID, rev::CANSparkMax::MotorType motorType, int countsPerRev);
 
   void PutSetpoint();
-  void InitSmartDashboardPID();
-  void PeriodicSmartDashboardPID();
+  void InitSmartDashboard();
+  void PeriodicSmartDashboard();
   void GetSmartDashboard();
   void RunPIDFromSmartDashboard();
 };

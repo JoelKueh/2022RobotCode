@@ -13,4 +13,5 @@ class Shooter {
   EncodedMotor Elevator;
 
   void InitSmartDashboard();
+  void GetSmartDashboard();
 };
