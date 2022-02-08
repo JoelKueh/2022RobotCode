@@ -1,37 +1,41 @@
 #include "EncodedMotor.h"
 
 #include "WiringDiagram.h"
-
-#include <rev/CANSparkMax.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
 /**
  * Constructs a SparkMax EncodedMotor
  * */
-EncodedMotor::EncodedMotor(int canID, MotorType motorType):
+EncodedMotor::EncodedMotor(char inputName[], int canID, MotorType motorType) :
     rev::CANSparkMax(canID, motorType),
-    ShooterPID (GetPIDController()),
-    ShooterEncoder (GetEncoder()) {}
+    PID (GetPIDController()),
+    Encoder (GetEncoder())
+{
+    motorName = inputName;
+}
 
-EncodedMotor::EncodedMotor(int canID, MotorType motorType, int countsPerRev) :
+EncodedMotor::EncodedMotor(char inputName[], int canID, MotorType motorType, int countsPerRev) :
     rev::CANSparkMax(canID, motorType),
-    ShooterPID (GetPIDController()),
-    ShooterEncoder (GetEncoder(rev::SparkMaxRelativeEncoder::Type::kQuadrature, countsPerRev)) {}
+    PID (GetPIDController()),
+    Encoder (GetEncoder(rev::SparkMaxRelativeEncoder::Type::kQuadrature, countsPerRev))
+{
+    motorName = inputName;
+}
 
 /**
  * This function sends the PID values to the smartdashboard
  * */
 void EncodedMotor::InitSmartDashboardPID()
 {
-    frc::SmartDashboard::PutNumber("P Gain", kP);
-    frc::SmartDashboard::PutNumber("I Gain", kI);
-    frc::SmartDashboard::PutNumber("D Gain", kD);
-    frc::SmartDashboard::PutNumber("I Zone", kIz);
-    frc::SmartDashboard::PutNumber("Feed Forward", kFF);
-    frc::SmartDashboard::PutNumber("Max Output", kMaxOutput);
-    frc::SmartDashboard::PutNumber("Min Output", kMinOutput);
+    frc::SmartDashboard::PutNumber(motorName + "P Gain", kP);
+    frc::SmartDashboard::PutNumber(motorName + "I Gain", kI);
+    frc::SmartDashboard::PutNumber(motorName + "D Gain", kD);
+    frc::SmartDashboard::PutNumber(motorName + "I Zone", kIz);
+    frc::SmartDashboard::PutNumber(motorName + "Feed Forward", kFF);
+    frc::SmartDashboard::PutNumber(motorName + "Max Output", kMaxOutput);
+    frc::SmartDashboard::PutNumber(motorName + "Min Output", kMinOutput);
 
-    frc::SmartDashboard::PutNumber("SetPoint", SetPoint);
+    frc::SmartDashboard::PutNumber(motorName + "SetPoint", SetPoint);
 }
 
 /**
@@ -39,12 +43,12 @@ void EncodedMotor::InitSmartDashboardPID()
  * */
 void EncodedMotor::PeriodicSmartDashboardPID()
 {
-    frc::SmartDashboard::PutNumber("Velocity", ShooterEncoder.GetVelocity());
+    frc::SmartDashboard::PutNumber(motorName + "Velocity", Encoder.GetVelocity());
 }
 
 void EncodedMotor::PutSetpoint()
 {
-    frc::SmartDashboard::PutNumber("SetPoint", SetPoint);
+    frc::SmartDashboard::PutNumber(motorName + "SetPoint", SetPoint);
 }
 
 /**
@@ -52,23 +56,23 @@ void EncodedMotor::PutSetpoint()
  * */
 void EncodedMotor::GetSmartDashboard()
 {
-    P = frc::SmartDashboard::GetNumber("P Gain", 0);
-    I = frc::SmartDashboard::GetNumber("I Gain", 0);
-    D = frc::SmartDashboard::GetNumber("D Gain", 0);
-    Iz = frc::SmartDashboard::GetNumber("I Zone", 0);
-    FF = frc::SmartDashboard::GetNumber("Feed Forward", 0);
-    MaxOutput = frc::SmartDashboard::GetNumber("Max Output", 0);
-    MinOutput = frc::SmartDashboard::GetNumber("Min Output", 0);
+    P = frc::SmartDashboard::GetNumber(motorName + "P Gain", 0);
+    I = frc::SmartDashboard::GetNumber(motorName + "I Gain", 0);
+    D = frc::SmartDashboard::GetNumber(motorName + "D Gain", 0);
+    Iz = frc::SmartDashboard::GetNumber(motorName + "I Zone", 0);
+    FF = frc::SmartDashboard::GetNumber(motorName + "Feed Forward", 0);
+    MaxOutput = frc::SmartDashboard::GetNumber(motorName + "Max Output", 0);
+    MinOutput = frc::SmartDashboard::GetNumber(motorName + "Min Output", 0);
 
-    if(P != kP) { kP = P; ShooterPID.SetP(kP); }
-    if(I != kI) { kI = I; ShooterPID.GetI(kI); }
-    if(D != kD) { kD = D; ShooterPID.SetD(kD); }
-    if(Iz != kIz) { kIz = Iz; ShooterPID.SetIZone(kIz); }
+    if(P != kP) { kP = P; PID.SetP(kP); }
+    if(I != kI) { kI = I; PID.GetI(kI); }
+    if(D != kD) { kD = D; PID.SetD(kD); }
+    if(Iz != kIz) { kIz = Iz; PID.SetIZone(kIz); }
     if(MaxOutput != kMaxOutput || MinOutput != kMinOutput)
     {
         kMaxOutput = MaxOutput;
         kMinOutput = MinOutput;
-        ShooterPID.SetOutputRange(kMinOutput, kMaxOutput);
+        PID.SetOutputRange(kMinOutput, kMaxOutput);
     }
 }
 
@@ -77,6 +81,6 @@ void EncodedMotor::GetSmartDashboard()
  * */
 void EncodedMotor::RunPIDFromSmartDashboard()
 {
-    SetPoint = frc::SmartDashboard::GetNumber("SetPoint", 0);
-    if(LastSetPoint != SetPoint) { ShooterPID.SetReference(SetPoint, rev::ControlType::kVelocity); }
+    SetPoint = frc::SmartDashboard::GetNumber(motorName + "SetPoint", 0);
+    if(LastSetPoint != SetPoint) { PID.SetReference(SetPoint, rev::ControlType::kVelocity); }
 }

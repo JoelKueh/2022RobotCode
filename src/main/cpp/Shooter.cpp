@@ -13,8 +13,8 @@
 extern WiringDiagram MyWiringDiagram;
 
 Shooter::Shooter() :
-    Flywheel(MyWiringDiagram.c_Flywheel, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
-    Elevator(MyWiringDiagram.c_Elevator, rev::CANSparkMax::MotorType::kBrushless, 22) {}
+    Flywheel("Fly", MyWiringDiagram.c_Flywheel, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
+    Elevator("Ele", MyWiringDiagram.c_Elevator, rev::CANSparkMax::MotorType::kBrushless, 22) {}
 
 void Shooter::InitSmartDashboard()
 {
