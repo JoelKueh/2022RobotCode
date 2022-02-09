@@ -18,5 +18,7 @@ class WiringDiagram {
 
   const int c_IntakeMotor = 0;
   const int c_PCMID = 0;
-  const int c_IntakePiston;
+  const int c_IntakePiston = 0;
+
+  const int c_HangerPiston = 0;
 };
