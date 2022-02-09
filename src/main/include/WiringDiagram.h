@@ -15,4 +15,8 @@ class WiringDiagram {
   const int c_FrontRightMotor = 0;
   const int c_BackLeftMotor = 0;
   const int c_BackRightMotor = 0;
+
+  const int c_IntakeMotor = 0;
+  const int c_PCMID = 0;
+  const int c_IntakePiston;
 };
