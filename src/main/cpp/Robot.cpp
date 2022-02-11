@@ -12,9 +12,15 @@
 
 #include "Drive.h"
 #include "WiringDiagram.h"
+#include "Intake.h"
+#include "Hanger.h"
+#include "Shooter.h"
 
 Drive MyDrive;
 WiringDiagram MyWiringDiagram;
+Intake MyIntake;
+Hanger MyHanger;
+
 frc::XboxController Xbox (0);
 
 void Robot::RobotInit() {
