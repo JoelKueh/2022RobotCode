@@ -10,7 +10,10 @@ class Shooter {
   Shooter();
 
   EncodedMotor Flywheel;
+  EncodedMotor::PIDValues FlywheelValues;
+
   EncodedMotor Elevator;
+  EncodedMotor::PIDValues ElevatorValues;
 
   void InitSmartDashboard();
   void GetSmartDashboard();

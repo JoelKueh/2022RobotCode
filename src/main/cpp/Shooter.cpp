@@ -4,17 +4,19 @@
 
 #include "Shooter.h"
 
-#include <rev/CANSparkMax.h>
-
 #include "WiringDiagram.h"
 #include "EncodedMotor.h"
 
+#include <rev/CANSparkMax.h>
 
 extern WiringDiagram MyWiringDiagram;
 
 Shooter::Shooter() :
-    Flywheel("Fly", MyWiringDiagram.c_Flywheel, rev::CANSparkMaxLowLevel::MotorType::kBrushless),
-    Elevator("Ele", MyWiringDiagram.c_Elevator, rev::CANSparkMax::MotorType::kBrushless, 22) {}
+    Flywheel("Fly", MyWiringDiagram.c_Flywheel, rev::CANSparkMaxLowLevel::MotorType::kBrushless, FlywheelValues),
+    Elevator("Ele", MyWiringDiagram.c_Elevator, rev::CANSparkMax::MotorType::kBrushless, 22, FlywheelValues)
+    {
+        // TODO: Put Flywheel and Elevator Values Here
+    }
 
 void Shooter::InitSmartDashboard()
 {
