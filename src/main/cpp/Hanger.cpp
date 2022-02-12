@@ -7,7 +7,10 @@
 
 extern WiringDiagram MyWiringDiagram;
 
-Hanger::Hanger() : HangerPiston(frc::PneumaticsModuleType::CTREPCM, MyWiringDiagram.c_HangerPiston) {}
+Hanger::Hanger() : HangerPiston(frc::PneumaticsModuleType::CTREPCM, MyWiringDiagram.c_HangerPiston)
+{
+    out = false;
+}
 
 void Hanger::Raise()
 {
@@ -17,4 +20,16 @@ void Hanger::Raise()
 void Hanger::Lower()
 {
     HangerPiston.Set(false);
+}
+
+void Hanger::Toggle()
+{
+    if (out)
+    {
+        Raise();
+    }
+    else
+    {
+        Lower();
+    }
 }

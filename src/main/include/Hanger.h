@@ -12,6 +12,9 @@ class Hanger {
 
   void Raise();
   void Lower();
+  void Toggle();
+
+  bool out;
 
   frc::Solenoid HangerPiston;
 };
