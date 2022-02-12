@@ -33,8 +33,12 @@ class EncodedMotor : public rev::CANSparkMax {
   EncodedMotor(char inputName[], int canID, rev::CANSparkMax::MotorType motorType, int countsPerRev, PIDValues inputValues);
 
   void PutSetpoint();
+  void SetReference(double reference, ControlType contorlType);
   void InitSmartDashboard();
   void PeriodicSmartDashboard();
   void GetSmartDashboard();
   void RunPIDFromSmartDashboard();
+
+  bool InVelocityRange();
+  bool InPositionRange();
 };

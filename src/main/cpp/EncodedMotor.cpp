@@ -15,9 +15,6 @@ EncodedMotor::EncodedMotor(char inputName[], int canID, MotorType motorType, PID
 
     inputPIDValues = inputValues;
     myPIDValues = inputValues;
-
-    // kP = 6e-5, kI = 1e-6, kD = 0, kIz = 0, kFF = 0.000015, kMaxOutput = 1.0, kMinOutput = -1.0;
-    // P = 6e-5, I = 1e-6, D = 0, Iz = 0, FF = 0.000015, MaxOutput = 1.0, MinOutput = -1.0;
 }
 
 EncodedMotor::EncodedMotor(char inputName[], int canID, MotorType motorType, int countsPerRev, PIDValues inputValues) :
@@ -29,10 +26,16 @@ EncodedMotor::EncodedMotor(char inputName[], int canID, MotorType motorType, int
 
     inputPIDValues = inputValues;
     myPIDValues = inputValues;
-
-    // kP = 6e-5, kI = 1e-6, kD = 0, kIz = 0, kFF = 0.000015, kMaxOutput = 1.0, kMinOutput = -1.0;
-    // P = 6e-5, I = 1e-6, D = 0, Iz = 0, FF = 0.000015, MaxOutput = 1.0, MinOutput = -1.0;
 }
+
+void EncodedMotor::SetReference(double reference, ControlType controlType)
+{
+    PID.SetReference(reference, controlType);
+
+    myPIDValues.setpoint = reference;
+    inputPIDValues.setpoint = reference;
+}
+
 
 /**
  * This function sends the PID values to the smartdashboard
@@ -95,4 +98,28 @@ void EncodedMotor::RunPIDFromSmartDashboard()
 {
     inputPIDValues.setpoint = frc::SmartDashboard::GetNumber(motorName + "SetPoint", 0);
     if(inputPIDValues.setpoint != myPIDValues.setpoint) { myPIDValues.setpoint = inputPIDValues.setpoint; PID.SetReference(myPIDValues.setpoint, rev::ControlType::kVelocity); }
+}
+
+bool EncodedMotor::InVelocityRange()
+{
+    if(Encoder.GetVelocity() < myPIDValues.setpoint + myPIDValues.velocityTolerance && Encoder.GetVelocity() > myPIDValues.setpoint - myPIDValues.velocityTolerance)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool EncodedMotor::InPositionRange()
+{
+    if(Encoder.GetPosition() < myPIDValues.setpoint + myPIDValues.positionTolerance && Encoder.GetVelocity() > myPIDValues.setpoint - myPIDValues.positionTolerance)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
