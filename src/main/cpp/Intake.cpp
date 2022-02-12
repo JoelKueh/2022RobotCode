@@ -6,7 +6,10 @@ extern WiringDiagram MyWiringDiagram;
 
 Intake::Intake() :
     IntakePiston(frc::PneumaticsModuleType::CTREPCM, MyWiringDiagram.c_IntakePiston),
-    IntakeMotor(MyWiringDiagram.c_IntakeMotor) {}
+    IntakeMotor(MyWiringDiagram.c_IntakeMotor)
+{
+    out = false;
+}
 
 void Intake::Out()
 {
@@ -16,6 +19,20 @@ void Intake::Out()
 void Intake::In()
 {
     IntakePiston.Set(false);
+}
+
+void Intake::Toggle()
+{
+    if(out)
+    {
+        In();
+        out = false;
+    }
+    else
+    {
+        Out();
+        out = true;
+    }
 }
 
 void Intake::Run(int speed)

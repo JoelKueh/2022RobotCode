@@ -10,7 +10,10 @@ class Intake {
   frc::Solenoid IntakePiston;
   ctre::phoenix::motorcontrol::can::WPI_VictorSPX IntakeMotor;
 
+  bool out;
+
   void Out();
   void In();
+  void Toggle();
   void Run(int speed);
 };
