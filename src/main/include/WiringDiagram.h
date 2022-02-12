@@ -10,6 +10,10 @@ class WiringDiagram {
 
   const int c_Flywheel = 0;
   const int c_Elevator = 0;
+  const int c_ElevatorA = 0;
+  const int c_ElevatorB = 0;
+  const int c_ElevatorLimit = 0;
+  const int c_IndexMotor = 0;
   
   const int c_FrontLeftMotor = 0;
   const int c_FrontRightMotor = 0;
