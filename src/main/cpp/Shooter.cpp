@@ -45,6 +45,11 @@ void Shooter::SpinFlywheel(double RPM)
     Flywheel.SetReference(RPM, rev::CANSparkMax::ControlType::kVelocity);
 }
 
+void Shooter::StopFlywheel()
+{
+    Flywheel.StopMotor();
+}
+
 void Shooter::RunElevator(double limelightAngle)
 {
     double elevatorSetpoint = limelightAngle;
@@ -67,6 +72,11 @@ void Shooter::RunElevator(double limelightAngle)
     {
         ElevatorMotor.Set(elevatorPower);
     }
+}
+
+void Shooter::StopElevator()
+{
+    ElevatorMotor.Set(0);
 }
 
 bool Shooter::FlywheelInRange()

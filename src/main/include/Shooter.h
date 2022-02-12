@@ -24,13 +24,14 @@ class Shooter {
   double ElevatorDistancePerPulse;
   double ElevatorMaxDistance;
 
-
   void InitPIDValues();
   void InitSmartDashboard();
   void GetSmartDashboard();
   void SpinFlywheel(double RPM);
   void RunElevator(double limelightAngle);
   void SetupElevatorEncoder();
+  void StopFlywheel();
+  void StopElevator();
 
   bool FlywheelInRange();
   bool ElevatorInRange();
