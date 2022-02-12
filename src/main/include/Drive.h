@@ -20,5 +20,6 @@ class Drive : public frc::MecanumDrive {
   ctre::phoenix::motorcontrol::can::WPI_VictorSPX* backLeft;
   ctre::phoenix::motorcontrol::can::WPI_VictorSPX* backRight;
 
-  void RunPIDControl();
+  void RunPIDControl(double inputAngle);
+  bool InRange();
 };
