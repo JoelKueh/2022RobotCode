@@ -5,27 +5,88 @@
 #include "Shooter.h"
 
 #include "WiringDiagram.h"
-#include "EncodedMotor.h"
-
-#include <rev/CANSparkMax.h>
 
 extern WiringDiagram MyWiringDiagram;
 
 Shooter::Shooter() :
-    Flywheel("Fly", MyWiringDiagram.c_Flywheel, rev::CANSparkMaxLowLevel::MotorType::kBrushless, FlywheelValues),
-    Elevator("Ele", MyWiringDiagram.c_Elevator, rev::CANSparkMax::MotorType::kBrushless, 22, FlywheelValues)
+    Flywheel("Fly", MyWiringDiagram.c_Flywheel, rev::CANSparkMax::MotorType::kBrushless, FlywheelValues),
+    ElevatorPID("Ele", ElevatorValues),
+    ElevatorMotor(MyWiringDiagram.c_Elevator, rev::CANSparkMax::MotorType::kBrushed),
+    ElevatorEncoder(MyWiringDiagram.c_ElevatorA, MyWiringDiagram.c_ElevatorB),
+    ElevatorLimit(MyWiringDiagram.c_ElevatorLimit)
+{
+    ElevatorDistancePerPulse = 1/22;
+    ElevatorMaxDistance = 25;
+    InitPIDValues();
+}
+
+void Shooter::SetupElevatorEncoder()
+{
+    ElevatorEncoder.SetDistancePerPulse(ElevatorDistancePerPulse);
+    while(!ElevatorLimit.Get())
     {
-        // TODO: Put Flywheel and Elevator Values Here
+        ElevatorMotor.Set(-.15);
     }
+    ElevatorEncoder.Reset();
+}
 
 void Shooter::InitSmartDashboard()
 {
     Flywheel.InitSmartDashboard();
-    Elevator.InitSmartDashboard();
 }
 
 void Shooter::GetSmartDashboard()
 {
     Flywheel.GetSmartDashboard();
-    Elevator.GetSmartDashboard();
+}
+
+void Shooter::SpinFlywheel(double RPM)
+{
+    Flywheel.SetReference(RPM, rev::CANSparkMax::ControlType::kVelocity);
+}
+
+void Shooter::RunElevator(double limelightAngle)
+{
+    double elevatorSetpoint = limelightAngle;
+    double distance = ElevatorEncoder.GetDistance();
+    double elevatorPower = ElevatorPID.Calculate(distance, elevatorSetpoint);
+    if(distance < 1 && elevatorPower < 0)
+    {
+        ElevatorMotor.Set(0);
+    }
+    else
+    {
+        ElevatorMotor.Set(elevatorPower);
+    }
+
+    if(distance > ElevatorMaxDistance && elevatorPower > 0)
+    {
+        ElevatorMotor.Set(0);
+    }
+    else
+    {
+        ElevatorMotor.Set(elevatorPower);
+    }
+}
+
+bool Shooter::FlywheelInRange()
+{
+    Flywheel.InVelocityRange();
+}
+
+bool Shooter::ElevatorInRange()
+{
+    ElevatorPID.AtSetpoint();
+}
+
+void Shooter::InitPIDValues()
+{
+    FlywheelValues.kP = 6e-5, FlywheelValues.kI = 1e-6, FlywheelValues.kD = 0, FlywheelValues.kIz = 0,
+    FlywheelValues.kFF = 0.000015, FlywheelValues.kMaxOutput = 1.0, FlywheelValues.kMinOutput = -1.0;
+    FlywheelValues.setpoint = 0;
+    FlywheelValues.positionTolerance = 1, FlywheelValues.velocityTolerance = 1;
+
+    ElevatorValues.kP = 6e-5, ElevatorValues.kI = 1e-6, ElevatorValues.kD = 0, ElevatorValues.kMaxOutput = 1.0, ElevatorValues.kMinOutput = -1.0;
+    ElevatorValues.setpoint = 0;
+    ElevatorValues.positionTolerance = 1, ElevatorValues.velocityTolerance = 1;
 }
