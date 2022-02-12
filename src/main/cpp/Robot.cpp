@@ -83,6 +83,25 @@ void Robot::TeleopInit() {}
 
 void Robot::TeleopPeriodic()
 {
+  if (Xbox.GetRightBumperPressed())
+  {
+    MyIntake.Toggle();
+  }
+
+  if (Xbox.GetRightTriggerAxis() > .15)
+  {
+    MyIntake.Run(.15);
+  }
+  else
+  {
+    MyIntake.Run(0);
+  }
+
+  if (Xbox.GetLeftBumperPressed())
+  {
+    MyHanger.Toggle();
+  }
+
   switch (increment)
   {
     case 0:
@@ -94,6 +113,8 @@ void Robot::TeleopPeriodic()
         MyLimelight.LEDOn();
       }
       IndexMotor.Set(0);
+      MyShooter.StopFlywheel();
+      MyShooter.StopElevator();
       break;
 
     case 1:
