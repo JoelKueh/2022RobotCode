@@ -9,19 +9,26 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <rev/CANSparkMax.h>
 #include <frc/XboxController.h>
+#include <ctre/phoenix/motorcontrol/can/WPI_VictorSPX.h>
 
 #include "Drive.h"
 #include "WiringDiagram.h"
 #include "Intake.h"
 #include "Hanger.h"
 #include "Shooter.h"
+#include "Limelight.h"
 
+Limelight MyLimelight;
 Drive MyDrive;
 WiringDiagram MyWiringDiagram;
 Intake MyIntake;
 Hanger MyHanger;
+Shooter MyShooter;
 
 frc::XboxController Xbox (0);
+ctre::phoenix::motorcontrol::can::WPI_VictorSPX IndexMotor;
+
+short increment = 0;
 
 void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
@@ -76,7 +83,40 @@ void Robot::TeleopInit() {}
 
 void Robot::TeleopPeriodic()
 {
-  MyDrive.DriveCartesian(Xbox.GetLeftY(), Xbox.GetLeftX(), Xbox.GetRightX());
+  switch (increment)
+  {
+    case 0:
+      MyDrive.DriveCartesian(Xbox.GetLeftY(), Xbox.GetLeftX(), Xbox.GetRightX());
+
+      if(Xbox.GetYButtonPressed())
+      {
+        increment = 1;
+        MyLimelight.LEDOn();
+      }
+      IndexMotor.Set(0);
+      break;
+
+    case 1:
+      MyShooter.SpinFlywheel(4500);
+      MyDrive.RunPIDControl(MyLimelight.GetX());
+      MyShooter.RunElevator(MyLimelight.GetY());
+
+      if(MyShooter.FlywheelInRange() && MyShooter.ElevatorInRange() && MyDrive.InRange())
+      {
+        IndexMotor.Set(.2);
+      }
+      else
+      {
+        IndexMotor.Set(0);
+      }
+
+      if(Xbox.GetYButtonPressed())
+      {
+        MyLimelight.LEDOff();
+        increment = 0;
+      }
+      break;
+  }
 }
 
 void Robot::DisabledInit() {}
