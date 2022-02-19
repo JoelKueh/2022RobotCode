@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 #include "Robot.h"
 
 #include <fmt/core.h>
@@ -10,6 +6,9 @@
 #include <rev/CANSparkMax.h>
 #include <frc/XboxController.h>
 #include <ctre/phoenix/motorcontrol/can/WPI_VictorSPX.h>
+#include <ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h>
+#include <frc/drive/MecanumDrive.h>
+#include <frc/DigitalInput.h>
 
 #include "Drive.h"
 #include "WiringDiagram.h"
@@ -25,8 +24,9 @@ Intake MyIntake;
 Hanger MyHanger;
 Shooter MyShooter;
 
-frc::XboxController Xbox (0);
-ctre::phoenix::motorcontrol::can::WPI_VictorSPX IndexMotor;
+frc::XboxController Xbox {MyWiringDiagram.c_Xbox};
+ctre::phoenix::motorcontrol::can::WPI_VictorSPX IndexMotor {MyWiringDiagram.c_IndexMotor};
+frc::DigitalInput ElevatorLimit {MyWiringDiagram.c_ElevatorLimit};
 
 short increment = 0;
 
@@ -106,7 +106,7 @@ void Robot::TeleopPeriodic()
   switch (increment)
   {
     case 0:
-      MyDrive.DriveCartesian(Xbox.GetLeftY(), Xbox.GetLeftX(), Xbox.GetRightX());
+      MyDrive.RunDrive(Xbox.GetLeftY(), Xbox.GetLeftX(), Xbox.GetRightX());
 
       if(Xbox.GetYButtonPressed())
       {
@@ -148,6 +148,11 @@ void Robot::DisabledPeriodic() {}
 void Robot::TestInit() {}
 
 void Robot::TestPeriodic() {}
+
+void Robot::ResetElevator()
+{
+
+}
 
 #ifndef RUNNING_FRC_TESTS
 int main() {

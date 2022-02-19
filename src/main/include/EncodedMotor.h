@@ -4,10 +4,12 @@
 #include <rev/CANSparkMax.h>
 #include "WiringDiagram.h"
 
-class EncodedMotor : public rev::CANSparkMax {
+class EncodedMotor {
  public:
-  rev::SparkMaxPIDController PID;
-  rev::SparkMaxRelativeEncoder Encoder;
+  rev::CANSparkMax* Controller;
+
+  rev::SparkMaxPIDController* PID;
+  rev::SparkMaxRelativeEncoder* Encoder;
 
   std::string motorName;
   
@@ -29,15 +31,16 @@ class EncodedMotor : public rev::CANSparkMax {
   // double SetPoint = 0;
   // double LastSetPoint = 0;
 
-  EncodedMotor(char inputName[], int canID, rev::CANSparkMax::MotorType motorType, PIDValues inputValues);
-  EncodedMotor(char inputName[], int canID, rev::CANSparkMax::MotorType motorType, int countsPerRev, PIDValues inputValues);
+  EncodedMotor(std::string inputName, int canID, rev::CANSparkMax::MotorType motorType, PIDValues inputValues);
+  EncodedMotor(std::string inputName, int canID, rev::CANSparkMax::MotorType motorType, int countsPerRev, PIDValues inputValues);
 
   void PutSetpoint();
-  void SetReference(double reference, ControlType contorlType);
+  void SetReference(double reference, rev::CANSparkMax::ControlType contorlType);
   void InitSmartDashboard();
   void PeriodicSmartDashboard();
   void GetSmartDashboard();
   void RunPIDFromSmartDashboard();
+  void StopMotor();
 
   bool InVelocityRange();
   bool InPositionRange();

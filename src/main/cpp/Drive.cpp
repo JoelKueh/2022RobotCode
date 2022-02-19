@@ -1,9 +1,10 @@
 #include "Drive.h"
 
 
-Drive::Drive() : MecanumDrive (frontLeft, backLeft, frontRight, backRight), DrivePID("Drive", DrivePIDValues)
+Drive::Drive()
 {
-    InitPIDValues();
+    // InitPIDValues();
+    // DrivePID("Drive", DrivePIDValues);
 
     frontLeft.SetInverted(true);
     frontRight.SetInverted(true);
@@ -13,7 +14,12 @@ Drive::Drive() : MecanumDrive (frontLeft, backLeft, frontRight, backRight), Driv
 
 void Drive::RunPIDControl(double inputAngle)
 {
-    DriveCartesian(0, 0, DrivePID.Calculate(inputAngle));
+    MyMecanumDrive.DriveCartesian(0, 0, DrivePID.Calculate(inputAngle));
+}
+
+void Drive::RunDrive(double xboxLY, double xboxLX, double xboxRX)
+{
+    MyMecanumDrive.DriveCartesian(xboxLY, xboxLX, xboxRX);
 }
 
 void Drive::InitPIDValues()

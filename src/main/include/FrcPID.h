@@ -23,7 +23,7 @@ class FrcPID : public frc2::PIDController {
   PIDValues inputPIDValues;
   PIDValues myPIDValues;
   
-  FrcPID(char name[], PIDValues inputValues);
+  FrcPID(std::string name, PIDValues inputValues);
 
   void PutSetpoint();
   void InitSmartDashboard();

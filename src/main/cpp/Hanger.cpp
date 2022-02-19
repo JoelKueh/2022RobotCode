@@ -3,11 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "Hanger.h"
-#include "WiringDiagram.h"
 
-extern WiringDiagram MyWiringDiagram;
-
-Hanger::Hanger() : HangerPiston(frc::PneumaticsModuleType::CTREPCM, MyWiringDiagram.c_HangerPiston)
+Hanger::Hanger()
 {
     out = false;
 }

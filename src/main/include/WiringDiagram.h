@@ -8,21 +8,23 @@ class WiringDiagram {
  public:
   WiringDiagram();
 
-  const int c_Flywheel = 1;
-  const int c_Elevator = 2;
-  const int c_ElevatorA = 0;
-  const int c_ElevatorB = 1;
-  const int c_ElevatorLimit = 0;
-  const int c_IndexMotor = 1;
+  const int c_Flywheel = 1; // CAN
+  const int c_Elevator = 2; // CAN
+  const int c_ElevatorA = 0; // PWM
+  const int c_ElevatorB = 1; // PWM
+  const int c_ElevatorLimit = 2; // PWM
+  const int c_IndexMotor = 1; // CAN
   
-  const int c_FrontLeftMotor = 3;
-  const int c_FrontRightMotor = 2;
-  const int c_BackLeftMotor = 1;
-  const int c_BackRightMotor = 0;
+  const int c_FrontLeftMotor = 3; // CAN
+  const int c_FrontRightMotor = 2; // CAN
+  const int c_BackLeftMotor = 1; // CAN
+  const int c_BackRightMotor = 0; // CAN
 
-  const int c_IntakeMotor = 0;
-  const int c_PCMID = 0;
-  const int c_IntakePiston = 0;
+  const int c_IntakeMotor = 0; // CAN
+  const int c_PCMID = 0; // CAN
+  const int c_IntakePiston = 0; // CAN
 
-  const int c_HangerPiston = 1;
+  const int c_HangerPiston = 1; // CAN
+
+  const int c_Xbox = 0; // Xbox
 };

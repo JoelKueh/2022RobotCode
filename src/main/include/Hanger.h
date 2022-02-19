@@ -5,6 +5,9 @@
 #pragma once
 
 #include <frc/Solenoid.h>
+#include "WiringDiagram.h"
+
+extern WiringDiagram MyWiringDiagram;
 
 class Hanger {
  public:
@@ -16,5 +19,5 @@ class Hanger {
 
   bool out;
 
-  frc::Solenoid HangerPiston;
+  frc::Solenoid HangerPiston {frc::PneumaticsModuleType::CTREPCM, MyWiringDiagram.c_HangerPiston};
 };

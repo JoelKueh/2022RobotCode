@@ -4,16 +4,7 @@
 
 #include "Shooter.h"
 
-#include "WiringDiagram.h"
-
-extern WiringDiagram MyWiringDiagram;
-
-Shooter::Shooter() :
-    Flywheel("Fly", MyWiringDiagram.c_Flywheel, rev::CANSparkMax::MotorType::kBrushless, FlywheelValues),
-    ElevatorPID("Ele", ElevatorValues),
-    ElevatorMotor(MyWiringDiagram.c_Elevator, rev::CANSparkMax::MotorType::kBrushed),
-    ElevatorEncoder(MyWiringDiagram.c_ElevatorA, MyWiringDiagram.c_ElevatorB),
-    ElevatorLimit(MyWiringDiagram.c_ElevatorLimit)
+Shooter::Shooter()
 {
     ElevatorDistancePerPulse = 1/22;
     ElevatorMaxDistance = 25;
@@ -81,12 +72,12 @@ void Shooter::StopElevator()
 
 bool Shooter::FlywheelInRange()
 {
-    Flywheel.InVelocityRange();
+    return Flywheel.InVelocityRange();
 }
 
 bool Shooter::ElevatorInRange()
 {
-    ElevatorPID.AtSetpoint();
+    return ElevatorPID.AtSetpoint();
 }
 
 void Shooter::InitPIDValues()

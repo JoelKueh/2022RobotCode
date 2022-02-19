@@ -1,6 +1,6 @@
 #include "FrcPID.h"
 
-FrcPID::FrcPID(char name[], PIDValues inputValues) : PIDController(myPIDValues.kP, myPIDValues.kI, myPIDValues.kD)
+FrcPID::FrcPID(std::string name, PIDValues inputValues) : PIDController(myPIDValues.kP, myPIDValues.kI, myPIDValues.kD)
 {
     PIDName = name;
     inputPIDValues = inputValues;

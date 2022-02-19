@@ -1,12 +1,6 @@
 #include "Intake.h"
-#include "WiringDiagram.h"
 
-extern WiringDiagram MyWiringDiagram;
-
-
-Intake::Intake() :
-    IntakePiston(frc::PneumaticsModuleType::CTREPCM, MyWiringDiagram.c_IntakePiston),
-    IntakeMotor(MyWiringDiagram.c_IntakeMotor)
+Intake::Intake()
 {
     out = false;
 }
