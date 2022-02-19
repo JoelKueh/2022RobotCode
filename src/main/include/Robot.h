@@ -1,13 +1,23 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 #pragma once
 
-#include <string>
+#include <string.h>
 
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
+
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <rev/CANSparkMax.h>
+#include <frc/XboxController.h>
+#include <ctre/phoenix/motorcontrol/can/WPI_VictorSPX.h>
+#include <ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h>
+#include <frc/drive/MecanumDrive.h>
+#include <rev/CANSparkMax.h>
+
+#include "Drive.h"
+#include "Intake.h"
+#include "Hanger.h"
+#include "Shooter.h"
+#include "Limelight.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -23,10 +33,33 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
 
  private:
+  void StupidTestInit();
+  void StuipdTestPeriodic();
+
+  void RealTeleopPeriodic();
+
   frc::SendableChooser<std::string> m_chooser;
   const std::string kAutoNameDefault = "Default";
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
-  
-  void ResetElevator();
+
+  frc::SendableChooser<std::string> SmartTestSwitch;
+  const std::string kTestDefault = "Default";
+  const std::string kTestFlywheel = "Flywheel";
+  const std::string kTestElevator = "Elevator";
+  const std::string kTestDrivePID = "Drive PID";
+  const std::string kTestAim = "Test Aim";
+  std::string TestSelected;
+
+  Limelight* MyLimelight;
+  Drive* MyDrive;
+  Intake* MyIntake;
+  Hanger* MyHanger;
+  Shooter* MyShooter;
+
+  frc::XboxController* Xbox;
+  ctre::phoenix::motorcontrol::can::WPI_VictorSPX* IndexMotor;
+
+  bool lockedOn = false;
+  short increment = 0;
 };
