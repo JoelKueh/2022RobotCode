@@ -9,17 +9,23 @@ Drive::Drive()
     frontLeft.SetInverted(true);
     frontRight.SetInverted(true);
     backLeft.SetInverted(true);
-    backRight.SetInverted(true);
+    // backRight.SetInverted(true);
+
+    MyMecanumDrive = new frc::MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 }
 
 void Drive::RunPIDControl(double inputAngle)
 {
-    MyMecanumDrive.DriveCartesian(0, 0, DrivePID.Calculate(inputAngle));
+    MyMecanumDrive->DriveCartesian(0, 0, DrivePID.Calculate(inputAngle));
 }
 
 void Drive::RunDrive(double xboxLY, double xboxLX, double xboxRX)
 {
-    MyMecanumDrive.DriveCartesian(xboxLY, xboxLX, xboxRX);
+    if(xboxLY < .15 && xboxLY > -.15) { xboxLY = 0; }
+    if(xboxLX < .15 && xboxLX > -.15) { xboxLX = 0; }
+    if(xboxRX < .15 && xboxRX > -.15) { xboxRX = 0; }
+
+    MyMecanumDrive->DriveCartesian(xboxLY, -xboxLX, -xboxRX);
 }
 
 void Drive::InitPIDValues()
@@ -32,4 +38,20 @@ void Drive::InitPIDValues()
 bool Drive::InRange()
 {
     return DrivePID.AtSetpoint();
+}
+
+void Drive::InitSmartDashboard()
+{
+    DrivePID.InitSmartDashboard();
+}
+
+void Drive::GetSmartDashboard()
+{
+    DrivePID.GetSmartDashboard();
+}
+
+void Drive::PutSmartDashboard()
+{
+    DrivePID.PutSetpoint();
+    DrivePID.PeriodicSmartDashboard();
 }

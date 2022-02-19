@@ -26,9 +26,14 @@ class Drive {
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX backLeft {MyWiringDiagram.c_BackLeftMotor};
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX backRight {MyWiringDiagram.c_BackRightMotor};
 
-  frc::MecanumDrive MyMecanumDrive {frontLeft, backLeft, frontRight, backRight};
+  frc::MecanumDrive* MyMecanumDrive;
 
   void RunPIDControl(double inputAngle);
   void RunDrive(double xboxLX, double xboxLY, double xboxRX);
   bool InRange();
+
+  void InitSmartDashboard();
+  void GetSmartDashboard();
+
+  void PutSmartDashboard();
 };
