@@ -2,12 +2,13 @@
 
 #include <string.h>
 #include <rev/CANSparkMax.h>
+#include <rev/SparkMaxPIDController.h>
+#include <rev/SparkMaxRelativeEncoder.h>
+#include <stdlib.h>
 #include "WiringDiagram.h"
 
-class EncodedMotor {
+class EncodedMotor : public rev::CANSparkMax{
  public:
-  rev::CANSparkMax* Controller;
-
   rev::SparkMaxPIDController* PID;
   rev::SparkMaxRelativeEncoder* Encoder;
 
@@ -32,7 +33,7 @@ class EncodedMotor {
   // double LastSetPoint = 0;
 
   EncodedMotor(std::string inputName, int canID, rev::CANSparkMax::MotorType motorType, PIDValues inputValues);
-  EncodedMotor(std::string inputName, int canID, rev::CANSparkMax::MotorType motorType, int countsPerRev, PIDValues inputValues);
+  // EncodedMotor(std::string inputName, int canID, rev::CANSparkMax::MotorType motorType, int countsPerRev, PIDValues inputValues);
 
   void PutSetpoint();
   void SetReference(double reference, rev::CANSparkMax::ControlType contorlType);
@@ -40,7 +41,8 @@ class EncodedMotor {
   void PeriodicSmartDashboard();
   void GetSmartDashboard();
   void RunPIDFromSmartDashboard();
-  void StopMotor();
+
+  void InitLiveWindow();
 
   bool InVelocityRange();
   bool InPositionRange();
