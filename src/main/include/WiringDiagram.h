@@ -15,10 +15,10 @@ class WiringDiagram {
   const int c_ElevatorLimit = 2; // PWM
   const int c_IndexMotor = 1; // CAN
   
-  const int c_FrontLeftMotor = 3; // CAN
-  const int c_FrontRightMotor = 2; // CAN
-  const int c_BackLeftMotor = 1; // CAN
-  const int c_BackRightMotor = 0; // CAN
+  const int c_FrontLeftMotor = 1; // CAN
+  const int c_FrontRightMotor = 0; // CAN
+  const int c_BackLeftMotor = 3; // CAN
+  const int c_BackRightMotor = 2; // CAN
 
   const int c_IntakeMotor = 0; // CAN
   const int c_PCMID = 0; // CAN
