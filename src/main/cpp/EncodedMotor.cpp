@@ -1,20 +1,17 @@
 #include "EncodedMotor.h"
 
-#include "WiringDiagram.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 /**
  * Constructs a SparkMax EncodedMotor
  * */
-EncodedMotor::EncodedMotor(std::string inputName, int canID, rev::CANSparkMax::MotorType motorType, PIDValues inputValues)
+EncodedMotor::EncodedMotor(std::string inputName, int canID, rev::CANSparkMax::MotorType motorType, PIDValues inputValues) : rev::CANSparkMax (canID, motorType)
 {
-    Controller = new rev::CANSparkMax (canID, motorType);
+    // PID = (rev::SparkMaxPIDController*) malloc(sizeof(rev::SparkMaxPIDController));
+    // Encoder = (rev::SparkMaxRelativeEncoder*) malloc(sizeof(rev::SparkMaxRelativeEncoder));
 
-    PID = (rev::SparkMaxPIDController*) malloc(sizeof(rev::SparkMaxPIDController));
-    Encoder = (rev::SparkMaxRelativeEncoder*) malloc(sizeof(rev::SparkMaxRelativeEncoder));
-
-    *PID = Controller->GetPIDController();
-    *Encoder = Controller->GetEncoder();
+    // *PID = Controller->GetPIDController();
+    // *Encoder = Controller->GetEncoder();
 
     motorName = inputName;
 
@@ -22,25 +19,25 @@ EncodedMotor::EncodedMotor(std::string inputName, int canID, rev::CANSparkMax::M
     myPIDValues = inputValues;
 }
 
-EncodedMotor::EncodedMotor(std::string inputName, int canID, rev::CANSparkMax::MotorType motorType, int countsPerRev, PIDValues inputValues)
+/* EncodedMotor::EncodedMotor(std::string inputName, int canID, rev::CANSparkMax::MotorType motorType, int countsPerRev, PIDValues inputValues)
 {
     Controller = new rev::CANSparkMax (canID, motorType);
 
-    PID = (rev::SparkMaxPIDController*) malloc(sizeof(rev::SparkMaxPIDController));
-    Encoder = (rev::SparkMaxRelativeEncoder*) malloc(sizeof(rev::SparkMaxRelativeEncoder));
+    // PID = (rev::SparkMaxPIDController*) malloc(sizeof(rev::SparkMaxPIDController));
+    // Encoder = (rev::SparkMaxRelativeEncoder*) malloc(sizeof(rev::SparkMaxRelativeEncoder));
 
-    *PID = Controller->GetPIDController();
-    *Encoder = Controller->GetEncoder(rev::SparkMaxRelativeEncoder::Type::kQuadrature, countsPerRev);
+    // *PID = Controller->GetPIDController();
+    // *Encoder = Controller->GetEncoder(rev::SparkMaxRelativeEncoder::Type::kQuadrature, countsPerRev);
 
     motorName = inputName;
 
     inputPIDValues = inputValues;
     myPIDValues = inputValues;
-}
+} */
 
 void EncodedMotor::SetReference(double reference, rev::CANSparkMax::ControlType controlType)
 {
-    PID->SetReference(reference, controlType);
+    GetPIDController().SetReference(reference, controlType);
 
     myPIDValues.setpoint = reference;
     inputPIDValues.setpoint = reference;
@@ -68,7 +65,7 @@ void EncodedMotor::InitSmartDashboard()
  * */
 void EncodedMotor::PeriodicSmartDashboard()
 {
-    frc::SmartDashboard::PutNumber(motorName + "Velocity", Encoder->GetVelocity());
+    frc::SmartDashboard::PutNumber(motorName + "Velocity", GetEncoder().GetVelocity());
 }
 
 void EncodedMotor::PutSetpoint()
@@ -89,15 +86,15 @@ void EncodedMotor::GetSmartDashboard()
     inputPIDValues.kMaxOutput = frc::SmartDashboard::GetNumber(motorName + "Max Output", 0);
     inputPIDValues.kMinOutput = frc::SmartDashboard::GetNumber(motorName + "Min Output", 0);
 
-    if(inputPIDValues.kP != myPIDValues.kP) { myPIDValues.kP = inputPIDValues.kP; PID->SetP(myPIDValues.kP); }
-    if(inputPIDValues.kI != myPIDValues.kI) { myPIDValues.kI = inputPIDValues.kI; PID->SetI(myPIDValues.kI); }
-    if(inputPIDValues.kD != myPIDValues.kD) { myPIDValues.kD = inputPIDValues.kD; PID->SetD(myPIDValues.kD); }
-    if(inputPIDValues.kIz != myPIDValues.kIz) { myPIDValues.kIz = inputPIDValues.kIz; PID->SetIZone(myPIDValues.kIz); }
+    if(inputPIDValues.kP != myPIDValues.kP) { myPIDValues.kP = inputPIDValues.kP; GetPIDController().SetP(myPIDValues.kP); }
+    if(inputPIDValues.kI != myPIDValues.kI) { myPIDValues.kI = inputPIDValues.kI; GetPIDController().SetI(myPIDValues.kI); }
+    if(inputPIDValues.kD != myPIDValues.kD) { myPIDValues.kD = inputPIDValues.kD; GetPIDController().SetD(myPIDValues.kD); }
+    if(inputPIDValues.kIz != myPIDValues.kIz) { myPIDValues.kIz = inputPIDValues.kIz; GetPIDController().SetIZone(myPIDValues.kIz); }
     if(inputPIDValues.kMaxOutput != myPIDValues.kMaxOutput || inputPIDValues.kMinOutput != myPIDValues.kMinOutput)
     {
         myPIDValues.kMaxOutput = inputPIDValues.kMaxOutput;
         myPIDValues.kMinOutput = inputPIDValues.kMinOutput;
-        PID->SetOutputRange(myPIDValues.kMinOutput, myPIDValues.kMaxOutput);
+        GetPIDController().SetOutputRange(myPIDValues.kMinOutput, myPIDValues.kMaxOutput);
     }
 }
 
@@ -107,12 +104,12 @@ void EncodedMotor::GetSmartDashboard()
 void EncodedMotor::RunPIDFromSmartDashboard()
 {
     inputPIDValues.setpoint = frc::SmartDashboard::GetNumber(motorName + "SetPoint", 0);
-    if(inputPIDValues.setpoint != myPIDValues.setpoint) { myPIDValues.setpoint = inputPIDValues.setpoint; PID->SetReference(myPIDValues.setpoint, rev::ControlType::kVelocity); }
+    if(inputPIDValues.setpoint != myPIDValues.setpoint) { myPIDValues.setpoint = inputPIDValues.setpoint; GetPIDController().SetReference(myPIDValues.setpoint, rev::ControlType::kVelocity); }
 }
 
 bool EncodedMotor::InVelocityRange()
 {
-    if(Encoder->GetVelocity() < myPIDValues.setpoint + myPIDValues.velocityTolerance && Encoder->GetVelocity() > myPIDValues.setpoint - myPIDValues.velocityTolerance)
+    if(GetEncoder().GetVelocity() < myPIDValues.setpoint + myPIDValues.velocityTolerance && GetEncoder().GetVelocity() > myPIDValues.setpoint - myPIDValues.velocityTolerance)
     {
         return true;
     }
@@ -124,7 +121,7 @@ bool EncodedMotor::InVelocityRange()
 
 bool EncodedMotor::InPositionRange()
 {
-    if(Encoder->GetPosition() < myPIDValues.setpoint + myPIDValues.positionTolerance && Encoder->GetVelocity() > myPIDValues.setpoint - myPIDValues.positionTolerance)
+    if(GetEncoder().GetPosition() < myPIDValues.setpoint + myPIDValues.positionTolerance && GetEncoder().GetVelocity() > myPIDValues.setpoint - myPIDValues.positionTolerance)
     {
         return true;
     }
@@ -132,9 +129,4 @@ bool EncodedMotor::InPositionRange()
     {
         return false;
     }
-}
-
-void EncodedMotor::StopMotor()
-{
-    Controller->StopMotor();
 }
