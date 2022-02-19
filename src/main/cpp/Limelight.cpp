@@ -11,12 +11,16 @@ Limelight::Limelight()
 
 double Limelight::GetX()
 {
-    return nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx",0.0);
+    double limelightX = nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx",0.0);
+    frc::SmartDashboard::PutNumber("Limelight X", limelightX);
+    return limelightX;
 }
 
 double Limelight::GetY()
 {
-    return nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("ty",0.0);
+    double limelightY = nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("ty",0.0);
+    frc::SmartDashboard::PutNumber("Limelight Y", limelightY);
+    return limelightY;
 }
 
 void Limelight::LEDOff()
