@@ -1,14 +1,12 @@
 #pragma once
 
-#include "EncodedMotor.h"
 #include "WiringDiagram.h"
+#include "Flywheel.h"
 #include "FrcPID.h"
 
 #include <rev/CANSparkMax.h>
 #include <frc/Encoder.h>
 #include <frc/DigitalInput.h>
-
-#include "WiringDiagram.h"
 
 extern WiringDiagram MyWiringDiagram;
 
@@ -16,14 +14,16 @@ class Shooter {
  public:
   Shooter();
   
-  EncodedMotor::PIDValues FlywheelValues
-  {
-    FlywheelValues.kP = 6e-5, FlywheelValues.kI = 1e-6, FlywheelValues.kD = 0, FlywheelValues.kIz = 0,
-    FlywheelValues.kFF = 0.000015, FlywheelValues.kMaxOutput = 1.0, FlywheelValues.kMinOutput = -1.0,
-    FlywheelValues.setpoint = 0,
-    FlywheelValues.positionTolerance = 1, FlywheelValues.velocityTolerance = 1
-  };
-  EncodedMotor Flywheel {"Fly", MyWiringDiagram.c_Flywheel, rev::CANSparkMax::MotorType::kBrushless, FlywheelValues};
+  // EncodedMotor::PIDValues MyFlywheelValues
+  // {
+  //   MyFlywheelValues.kP = 6e-5, MyFlywheelValues.kI = 1e-6, MyFlywheelValues.kD = 0, MyFlywheelValues.kIz = 0,
+  //   MyFlywheelValues.kFF = 0.000015, MyFlywheelValues.kMaxOutput = 1.0, MyFlywheelValues.kMinOutput = -1.0,
+  //   MyFlywheelValues.setpoint = 0,
+  //   MyFlywheelValues.positionTolerance = 1, MyFlywheelValues.velocityTolerance = 1
+  // };
+  // EncodedMotor MyFlywheel {"Fly", MyWiringDiagram.c_MyFlywheel, rev::CANSparkMax::MotorType::kBrushless, MyFlywheelValues};
+
+  Flywheel MyFlywheel;
 
   FrcPID::PIDValues ElevatorValues
   { 
@@ -47,7 +47,8 @@ class Shooter {
   void SetupElevatorEncoder();
   void StopFlywheel();
   void StopElevator();
-
+  void PutSmartDashboard();
+  void DeleteSmartDashboard();
   bool FlywheelInRange();
   bool ElevatorInRange();
 };

@@ -23,22 +23,24 @@ void Shooter::SetupElevatorEncoder()
 
 void Shooter::InitSmartDashboard()
 {
-    Flywheel.InitSmartDashboard();
+    MyFlywheel.InitSmartDashboard();
+    ElevatorPID.InitSmartDashboard();
 }
 
 void Shooter::GetSmartDashboard()
 {
-    Flywheel.GetSmartDashboard();
+    MyFlywheel.GetSmartDashboard();
+    ElevatorPID.GetSmartDashboard();
 }
 
 void Shooter::SpinFlywheel(double RPM)
 {
-    Flywheel.SetReference(RPM, rev::CANSparkMax::ControlType::kVelocity);
+    MyFlywheel.SetReference(RPM, rev::CANSparkMax::ControlType::kVelocity);
 }
 
 void Shooter::StopFlywheel()
 {
-    Flywheel.StopMotor();
+    MyFlywheel.StopMotor();
 }
 
 void Shooter::RunElevator(double limelightAngle)
@@ -72,7 +74,7 @@ void Shooter::StopElevator()
 
 bool Shooter::FlywheelInRange()
 {
-    return Flywheel.InVelocityRange();
+    return MyFlywheel.InVelocityRange();
 }
 
 bool Shooter::ElevatorInRange()
@@ -82,12 +84,26 @@ bool Shooter::ElevatorInRange()
 
 void Shooter::InitPIDValues()
 {
-    FlywheelValues.kP = 6e-5, FlywheelValues.kI = 1e-6, FlywheelValues.kD = 0, FlywheelValues.kIz = 0,
-    FlywheelValues.kFF = 0.000015, FlywheelValues.kMaxOutput = 1.0, FlywheelValues.kMinOutput = -1.0;
-    FlywheelValues.setpoint = 0;
-    FlywheelValues.positionTolerance = 1, FlywheelValues.velocityTolerance = 1;
+    // MyFlywheelValues.kP = 6e-5, MyFlywheelValues.kI = 1e-6, MyFlywheelValues.kD = 0, MyFlywheelValues.kIz = 0,
+    // MyFlywheelValues.kFF = 0.000015, MyFlywheelValues.kMaxOutput = 1.0, MyFlywheelValues.kMinOutput = -1.0;
+    // MyFlywheelValues.setpoint = 0;
+    // MyFlywheelValues.positionTolerance = 1, MyFlywheelValues.velocityTolerance = 1;
 
     ElevatorValues.kP = 6e-5, ElevatorValues.kI = 1e-6, ElevatorValues.kD = 0, ElevatorValues.kMaxOutput = 1.0, ElevatorValues.kMinOutput = -1.0;
     ElevatorValues.setpoint = 0;
     ElevatorValues.positionTolerance = 1, ElevatorValues.velocityTolerance = 1;
+}
+
+void Shooter::PutSmartDashboard()
+{
+    ElevatorPID.PutSetpoint();
+    MyFlywheel.PutSetpoint();
+
+    ElevatorPID.PeriodicSmartDashboard();
+    MyFlywheel.PeriodicSmartDashboard();
+}
+
+void Shooter::DeleteSmartDashboard()
+{
+    MyFlywheel.DeleteSmartDashboard();
 }
