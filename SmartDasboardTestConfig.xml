@@ -1,0 +1,118 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="Fly Velocity" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="1119" y="212"/>
+	</widget>
+	<widget field="Limelight Y" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="311" y="34"/>
+	</widget>
+	<widget field="Limelight X" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="312" y="13"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="465" y="11"/>
+		<width>333</width>
+		<height>321</height>
+		<property name="Camera Choice" value=""/>
+		<property name="Selected Camera Path" value="https://10.21.43.11:5800"/>
+	</static-widget>
+	<widget field="limelight_Stream" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="110"/>
+	</widget>
+	<widget field="limelight_Interface" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="90"/>
+	</widget>
+	<widget field="limelight_PipelineName" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="70"/>
+	</widget>
+	<widget field="Fly SetPoint" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1043" y="171"/>
+	</widget>
+	<widget field="Fly Min Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1031" y="150"/>
+	</widget>
+	<widget field="Fly Max Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1029" y="128"/>
+	</widget>
+	<widget field="Fly Feed Forward" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1017" y="106"/>
+	</widget>
+	<widget field="Fly I Zone" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1052" y="83"/>
+	</widget>
+	<widget field="Fly D Gain" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1052" y="60"/>
+	</widget>
+	<widget field="Fly I Gain" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1054" y="37"/>
+	</widget>
+	<widget field="Fly P Gain" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1052" y="14"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="1" y="-2"/>
+	</static-widget>
+	<widget field="Shoot?" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="47" y="7"/>
+		<width>94</width>
+		<height>62</height>
+	</widget>
+	<widget field="Ele V_Toleracne" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="810" y="179"/>
+	</widget>
+	<widget field="Ele P_Tolerance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="811" y="155"/>
+	</widget>
+	<widget field="Ele SetPoint" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="833" y="131"/>
+	</widget>
+	<widget field="Ele Min Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="822" y="106"/>
+	</widget>
+	<widget field="Ele Max Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="820" y="83"/>
+	</widget>
+	<widget field="Ele D Gain" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="843" y="59"/>
+	</widget>
+	<widget field="Ele I Gain" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="847" y="36"/>
+	</widget>
+	<widget field="Ele P Gain" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="844" y="14"/>
+	</widget>
+	<widget field="Test Modes" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="1442" y="5"/>
+	</widget>
+	<widget field="Drive V_Toleracne" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1234" y="178"/>
+	</widget>
+	<widget field="Drive P_Tolerance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1236" y="156"/>
+	</widget>
+	<widget field="Drive SetPoint" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1255" y="133"/>
+	</widget>
+	<widget field="Drive Min Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1244" y="110"/>
+	</widget>
+	<widget field="Drive Max Output" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1244" y="86"/>
+	</widget>
+	<widget field="Drive D Gain" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1264" y="62"/>
+	</widget>
+	<widget field="Drive I Gain" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1268" y="39"/>
+	</widget>
+	<widget field="Drive P Gain" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1267" y="18"/>
+		<width>114</width>
+	</widget>
+	<widget field="Auto Modes" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="1444" y="141"/>
+	</widget>
+</dashboard>
+<live-window>
+</live-window>
+</xml>
