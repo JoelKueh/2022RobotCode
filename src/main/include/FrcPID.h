@@ -30,6 +30,6 @@ class FrcPID : public frc2::PIDController {
   void PeriodicSmartDashboard();
   void GetSmartDashboard();
   void RunPIDFromSmartDashboard();
-  double ClampCalcualte(double input);
+  double ClampCalculate(double input);
   double ClampCalculateSetpoint(double input, double inputSetpoint);
 };

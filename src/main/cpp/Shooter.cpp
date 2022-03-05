@@ -4,20 +4,23 @@
 
 #include "Shooter.h"
 
+#include <iostream>
+
 Shooter::Shooter()
 {
-    ElevatorDistancePerPulse = 1/22;
-    ElevatorMaxDistance = 25;
+    ElevatorDistancePerPulse = -1.0/22.0;
+    ElevatorMaxDistance = 45.0;
+    ElevatorEncoder.SetDistancePerPulse(ElevatorDistancePerPulse);
     InitPIDValues();
 }
 
-void Shooter::SetupElevatorEncoder()
+void Shooter::ZeroElevator()
 {
-    ElevatorEncoder.SetDistancePerPulse(ElevatorDistancePerPulse);
-    while(!ElevatorLimit.Get())
+    while(ElevatorLimit.Get())
     {
-        ElevatorMotor.Set(-.15);
+        ElevatorMotor.Set(-1);
     }
+    ElevatorMotor.Set(0);
     ElevatorEncoder.Reset();
 }
 
@@ -48,16 +51,12 @@ void Shooter::RunElevator(double limelightAngle)
     double elevatorSetpoint = limelightAngle;
     double distance = ElevatorEncoder.GetDistance();
     double elevatorPower = ElevatorPID.Calculate(distance, elevatorSetpoint);
-    if(distance < 1 && elevatorPower < 0)
+
+    if(!ElevatorLimit.Get() && elevatorPower < 0)
     {
         ElevatorMotor.Set(0);
     }
-    else
-    {
-        ElevatorMotor.Set(elevatorPower);
-    }
-
-    if(distance > ElevatorMaxDistance && elevatorPower > 0)
+    else if(distance > ElevatorMaxDistance && elevatorPower > 0)
     {
         ElevatorMotor.Set(0);
     }
@@ -96,14 +95,43 @@ void Shooter::InitPIDValues()
 
 void Shooter::PutSmartDashboard()
 {
-    ElevatorPID.PutSetpoint();
-    MyFlywheel.PutSetpoint();
+    // ElevatorPID.PutSetpoint();
+    frc::SmartDashboard::PutNumber("EleLimit", ElevatorLimit.Get());
+    frc::SmartDashboard::PutNumber("Ele Distance", ElevatorEncoder.GetDistance());
+    // MyFlywheel.PutSetpoint();
 
     ElevatorPID.PeriodicSmartDashboard();
     MyFlywheel.PeriodicSmartDashboard();
 }
 
+void Shooter::FlywheelFF(double RPM)
+{
+    MyFlywheel.VelocityFF(RPM);
+}
+
 void Shooter::DeleteSmartDashboard()
 {
     MyFlywheel.DeleteSmartDashboard();
+}
+
+void Shooter::FlywheelDashControl()
+{
+    MyFlywheel.RunPIDFromSmartDashboard();
+}
+
+void Shooter::SetElevator(double power)
+{
+    if(!ElevatorLimit.Get() && power < 0)
+    {
+        ElevatorMotor.Set(0);
+    }
+    else if(ElevatorEncoder.GetDistance() > 45.0 && power > 0)
+    {
+        ElevatorMotor.Set(0);
+    }
+    else
+    {
+        ElevatorMotor.Set(power);
+    }
+    frc::SmartDashboard::PutNumber("Ele Distance", ElevatorEncoder.GetDistance());
 }

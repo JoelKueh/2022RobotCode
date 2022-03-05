@@ -8,17 +8,14 @@
 extern WiringDiagram MyWiringDiagram;
 
 class Drive {
- private:
-  void InitPIDValues();
-
  public:
   Drive();
-  FrcPID::PIDValues DrivePIDValues;
-  // {
-  //   DrivePIDValues.kP = 6e-5, DrivePIDValues.kI = 1e-6, DrivePIDValues.kD = 0, DrivePIDValues.kMaxOutput = 1.0, DrivePIDValues.kMinOutput = -1.0,
-  //   DrivePIDValues.setpoint = 0,
-  //   DrivePIDValues.positionTolerance = 1, DrivePIDValues.velocityTolerance = 1
-  // };
+  FrcPID::PIDValues DrivePIDValues
+  {
+    DrivePIDValues.kP = .05, DrivePIDValues.kI = 0, DrivePIDValues.kD = 0, DrivePIDValues.kMaxOutput = 1.0, DrivePIDValues.kMinOutput = -1.0,
+    DrivePIDValues.setpoint = 0,
+    DrivePIDValues.positionTolerance = 1, DrivePIDValues.velocityTolerance = 5
+  };
   FrcPID DrivePID {"Drive", DrivePIDValues};
 
   ctre::phoenix::motorcontrol::can::WPI_TalonSRX frontLeft {MyWiringDiagram.c_FrontLeftMotor};

@@ -1,6 +1,5 @@
 #include "Drive.h"
 
-
 Drive::Drive()
 {
     // InitPIDValues();
@@ -16,7 +15,17 @@ Drive::Drive()
 
 void Drive::RunPIDControl(double inputAngle)
 {
-    MyMecanumDrive->DriveCartesian(0, 0, DrivePID.Calculate(inputAngle));
+    double output = DrivePID.ClampCalculate(inputAngle);
+    if(output > 0)
+    {
+        output = output + .05;
+    }
+    else if(output < 0)
+    {
+        output = output - .05;
+    }
+
+    MyMecanumDrive->DriveCartesian(0, 0, output);
 }
 
 void Drive::RunDrive(double xboxLY, double xboxLX, double xboxRX)
@@ -26,13 +35,6 @@ void Drive::RunDrive(double xboxLY, double xboxLX, double xboxRX)
     if(xboxRX < .15 && xboxRX > -.15) { xboxRX = 0; }
 
     MyMecanumDrive->DriveCartesian(xboxLY, -xboxLX, -xboxRX);
-}
-
-void Drive::InitPIDValues()
-{
-    DrivePIDValues.kP = 6e-5, DrivePIDValues.kI = 1e-6, DrivePIDValues.kD = 0, DrivePIDValues.kMaxOutput = 1.0, DrivePIDValues.kMinOutput = -1.0;
-    DrivePIDValues.setpoint = 0;
-    DrivePIDValues.positionTolerance = 1, DrivePIDValues.velocityTolerance = 1;
 }
 
 bool Drive::InRange()

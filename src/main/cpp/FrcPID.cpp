@@ -6,6 +6,8 @@ FrcPID::FrcPID(std::string name, PIDValues inputValues) : PIDController(myPIDVal
     inputPIDValues = inputValues;
     myPIDValues = inputValues;
 
+    SetPID(myPIDValues.kP, myPIDValues.kI, myPIDValues.kD);
+    SetSetpoint(myPIDValues.setpoint);
     SetTolerance(myPIDValues.positionTolerance, myPIDValues.velocityTolerance);
 }
 
@@ -65,11 +67,14 @@ void FrcPID::RunPIDFromSmartDashboard()
     if(myPIDValues.setpoint != inputPIDValues.setpoint) { myPIDValues.setpoint = inputPIDValues.setpoint; SetSetpoint(myPIDValues.setpoint); }
 }
 
-double FrcPID::ClampCalcualte(double input)
+double FrcPID::ClampCalculate(double input)
 {
     double output = Calculate(input);
     if(output > myPIDValues.kMaxOutput) { output = myPIDValues.kMaxOutput; }
     if(output < myPIDValues.kMinOutput) { output = myPIDValues.kMinOutput; }
+
+    frc::SmartDashboard::PutNumber(PIDName + " output", output);
+
     return output;
 }
 

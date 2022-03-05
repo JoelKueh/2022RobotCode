@@ -5,11 +5,20 @@
 /**
  * Constructs a SparkMax Flywheel
  * */
-Flywheel::Flywheel() = default;
+Flywheel::Flywheel()
+{
+    PID.SetP(myPIDValues.kP);
+    PID.SetI(myPIDValues.kI);
+    PID.SetD(myPIDValues.kD);
+    PID.SetIZone(myPIDValues.kIz);
+    PID.SetFF(myPIDValues.kFF);
+    PID.SetOutputRange(myPIDValues.kMinOutput, myPIDValues.kMaxOutput);
+}
 
 void Flywheel::SetReference(double reference, rev::CANSparkMax::ControlType controlType)
 {
-    PID.SetReference(reference, controlType);
+    
+    PID.SetReference(reference, controlType, 0);
 
     myPIDValues.setpoint = reference;
     inputPIDValues.setpoint = reference;
@@ -36,6 +45,7 @@ void Flywheel::InitSmartDashboard()
  * */
 void Flywheel::PeriodicSmartDashboard()
 {
+    frc::SmartDashboard::PutNumber(motorName + " Output", Controller.Get());
     frc::SmartDashboard::PutNumber(motorName + " Velocity", Encoder.GetVelocity());
 }
 
@@ -60,6 +70,7 @@ void Flywheel::GetSmartDashboard()
     if(inputPIDValues.kP != myPIDValues.kP) { myPIDValues.kP = inputPIDValues.kP; PID.SetP(myPIDValues.kP); }
     if(inputPIDValues.kI != myPIDValues.kI) { myPIDValues.kI = inputPIDValues.kI; PID.SetI(myPIDValues.kI); }
     if(inputPIDValues.kD != myPIDValues.kD) { myPIDValues.kD = inputPIDValues.kD; PID.SetD(myPIDValues.kD); }
+    if(inputPIDValues.kFF != myPIDValues.kFF) { myPIDValues.kFF = inputPIDValues.kFF; PID.SetFF(myPIDValues.kFF); }
     if(inputPIDValues.kIz != myPIDValues.kIz) { myPIDValues.kIz = inputPIDValues.kIz; PID.SetIZone(myPIDValues.kIz); }
     if(inputPIDValues.kMaxOutput != myPIDValues.kMaxOutput || inputPIDValues.kMinOutput != myPIDValues.kMinOutput)
     {
@@ -119,4 +130,16 @@ void Flywheel::DeleteSmartDashboard()
  
     // frc::SmartDashboard::Delete(motorName + " SetPoint");
     frc::SmartDashboard::Delete(motorName + " Velocity");
+}
+
+void Flywheel::VelocityFF(double setpoint)
+{
+    inputPIDValues.setpoint = setpoint;
+    myPIDValues.setpoint = setpoint;
+
+    double currentVoltage = PDP.GetVoltage();
+    double targetVoltage = setpoint * VoltageRatio;
+    Controller.Set(targetVoltage / currentVoltage);
+
+    frc::SmartDashboard::PutNumber("Voltage", currentVoltage);
 }

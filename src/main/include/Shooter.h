@@ -27,7 +27,7 @@ class Shooter {
 
   FrcPID::PIDValues ElevatorValues
   { 
-    ElevatorValues.kP = 6e-5, ElevatorValues.kI = 1e-6, ElevatorValues.kD = 0, ElevatorValues.kMaxOutput = 1.0, ElevatorValues.kMinOutput = -1.0,
+    ElevatorValues.kP = .5, ElevatorValues.kI = 0, ElevatorValues.kD = 0, ElevatorValues.kMaxOutput = 1.0, ElevatorValues.kMinOutput = -1.0,
     ElevatorValues.setpoint = 0,
     ElevatorValues.positionTolerance = 1, ElevatorValues.velocityTolerance = 1
   };
@@ -44,11 +44,14 @@ class Shooter {
   void GetSmartDashboard();
   void SpinFlywheel(double RPM);
   void RunElevator(double limelightAngle);
-  void SetupElevatorEncoder();
+  void ZeroElevator();
   void StopFlywheel();
   void StopElevator();
   void PutSmartDashboard();
   void DeleteSmartDashboard();
+  void FlywheelDashControl();
+  void SetElevator(double power);
+  void FlywheelFF(double RPM);
   bool FlywheelInRange();
   bool ElevatorInRange();
 };

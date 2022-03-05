@@ -12,6 +12,8 @@
 #include <ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h>
 #include <frc/drive/MecanumDrive.h>
 #include <rev/CANSparkMax.h>
+#include <frc/Timer.h>
+#include <frc/Watchdog.h>
 
 #include "Drive.h"
 #include "Intake.h"
@@ -33,10 +35,8 @@ class Robot : public frc::TimedRobot {
   void TestPeriodic() override;
 
  private:
-  void StupidTestInit();
-  void StuipdTestPeriodic();
-
-  void RealTeleopPeriodic();
+  void ShooterControl();
+  void SimpleAuto();
 
   frc::SendableChooser<std::string> m_chooser;
   const std::string kAutoNameDefault = "Default";
@@ -50,6 +50,8 @@ class Robot : public frc::TimedRobot {
   const std::string kTestDrivePID = "Drive PID";
   const std::string kTestAim = "Test Aim";
   std::string TestSelected;
+
+  frc::Watchdog MyWatchdog;
 
   Limelight* MyLimelight;
   Drive* MyDrive;

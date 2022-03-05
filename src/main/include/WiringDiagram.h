@@ -10,9 +10,9 @@ class WiringDiagram {
 
   const int c_Flywheel = 1; // CAN
   const int c_Elevator = 2; // CAN
-  const int c_ElevatorA = 0; // PWM
-  const int c_ElevatorB = 1; // PWM
-  const int c_ElevatorLimit = 2; // PWM
+  const int c_ElevatorA = 0; // DIO
+  const int c_ElevatorB = 1; // DIO
+  const int c_ElevatorLimit = 2; // DIO
   const int c_IndexMotor = 1; // CAN
   
   const int c_FrontLeftMotor = 1; // CAN
