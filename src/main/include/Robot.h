@@ -14,6 +14,7 @@
 #include <rev/CANSparkMax.h>
 #include <frc/Timer.h>
 #include <frc/Watchdog.h>
+#include <frc2/command/WaitCommand.h>
 
 #include "Drive.h"
 #include "Intake.h"
