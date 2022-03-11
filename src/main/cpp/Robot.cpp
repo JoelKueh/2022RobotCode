@@ -35,6 +35,9 @@ void Robot::AutonomousInit() {
 
   MyShooter->ZeroElevator();
 
+  MyHanger->Init();
+  MyIntake->Init();
+
   if (m_autoSelected == kAutoNameCustom) {
     // Custom Auto goes here
   } else {
@@ -52,6 +55,9 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit()
 {
+  MyHanger->Init();
+  MyIntake->Init();
+
   MyLimelight->LEDOff();
   MyShooter->ZeroElevator();
   MyShooter->InitSmartDashboard();
@@ -64,14 +70,14 @@ void Robot::TeleopPeriodic()
   MyShooter->PutSmartDashboard();
   MyDrive->GetSmartDashboard();
 
-  if(Xbox->GetRightBumperPressed())
-  {
-    MyIntake->Toggle();
-  }
+  // if(Xbox->GetRightBumperPressed())
+  // {
+  //   MyIntake->Toggle();
+  // }
 
   if(Xbox->GetRightTriggerAxis() > .15)
   {
-    MyIntake->Run(.15);
+    MyIntake->Run(.9);
   }
   else
   {
@@ -83,6 +89,7 @@ void Robot::TeleopPeriodic()
     MyHanger->Toggle();
   }
 
+  FourShots();
   ShooterControl();
 }
 
@@ -93,6 +100,17 @@ void Robot::DisabledPeriodic() {}
 void Robot::TestInit() {}
 
 void Robot::TestPeriodic() {}
+
+void Robot::FourShots()
+{
+  switch (Xbox->GetPOV())
+  {
+    case 0: flyRPM = 5500; eleSetpoint = 0; break;
+    case 90: flyRPM = 3200; eleSetpoint = 10; break;
+    case 180: flyRPM = 4150; eleSetpoint = 20; break;
+    case 270: flyRPM = 5500; eleSetpoint = 30; break;
+  }
+}
 
 void Robot::ShooterControl()
 {
@@ -118,10 +136,10 @@ void Robot::ShooterControl()
     case 1:
       frc::SmartDashboard::PutBoolean("Shoot?", lockedOn);
 
-      double flyRPM = frc::SmartDashboard::GetNumber("Fly SetPoint", 0);
-      MyShooter->FlywheelFF(flyRPM);
+      // flyRPM = frc::SmartDashboard::GetNumber("Fly SetPoint", 0);
+      MyShooter->SpinFlywheel(flyRPM);
       MyDrive->RunPIDControl(MyLimelight->GetX());
-      double eleSetpoint = frc::SmartDashboard::GetNumber("Ele Temp", 0);
+      // eleSetpoint = frc::SmartDashboard::GetNumber("Ele Temp", 0);
       MyShooter->RunElevator(eleSetpoint);
 
       MyLimelight->GetX();
@@ -156,50 +174,50 @@ void Robot::ShooterControl()
 
 void Robot::SimpleAuto()
 {
-  MyWatchdog.Disable();
-  MyDrive->RunDrive(0, .45, 0);
-  MyIntake->Run(1);
-  sleep(1);
-  MyDrive->RunDrive(0, 0, 0);
-  sleep(1);
-  MyIntake->Run(0);
-  MyDrive->RunDrive(0, 0, -.3);
-  sleep(1);
-  MyDrive->RunDrive(0, 0, 0);
+  // MyWatchdog.Disable();
+  // MyDrive->RunDrive(0, .45, 0);
+  // MyIntake->Run(1);
+  // sleep(1);
+  // MyDrive->RunDrive(0, 0, 0);
+  // sleep(1);
+  // MyIntake->Run(0);
+  // MyDrive->RunDrive(0, 0, -.3);
+  // sleep(1);
+  // MyDrive->RunDrive(0, 0, 0);
 
-  double flyRPM = 0;
-  double eleSetpoint = 0;
+  // double flyRPM = 0;
+  // double eleSetpoint = 0;
 
-  MyShooter->FlywheelFF(flyRPM);
-  MyDrive->RunPIDControl(MyLimelight->GetX());
-  MyShooter->RunElevator(eleSetpoint);
+  // MyShooter->FlywheelFF(flyRPM);
+  // MyDrive->RunPIDControl(MyLimelight->GetX());
+  // MyShooter->RunElevator(eleSetpoint);
 
-  MyLimelight->GetX();
-  MyLimelight->GetY();
+  // MyLimelight->GetX();
+  // MyLimelight->GetY();
 
-  if(MyShooter->FlywheelInRange() && MyShooter->ElevatorInRange() && MyDrive->InRange())
-  {
-    lockedOn = true;
-  }
-  else
-  {
-    lockedOn = false;
-  }
+  // if(MyShooter->FlywheelInRange() && MyShooter->ElevatorInRange() && MyDrive->InRange())
+  // {
+  //   lockedOn = true;
+  // }
+  // else
+  // {
+  //   lockedOn = false;
+  // }
 
-  if(Xbox->GetXButton())
-  {
-    IndexMotor->Set(.5);
-  }
-  else
-  {
-    IndexMotor->Set(0);
-  }
+  // if(Xbox->GetXButton())
+  // {
+  //   IndexMotor->Set(.5);
+  // }
+  // else
+  // {
+  //   IndexMotor->Set(0);
+  // }
 
-  if(Xbox->GetYButtonPressed())
-  {
-    MyLimelight->LEDOff();
-    increment = 0;
-  } 
+  // if(Xbox->GetYButtonPressed())
+  // {
+  //   MyLimelight->LEDOff();
+  //   increment = 0;
+  // } 
 }
 
 #ifndef RUNNING_FRC_TESTS

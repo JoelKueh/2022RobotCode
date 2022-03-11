@@ -13,7 +13,6 @@
 #include <frc/drive/MecanumDrive.h>
 #include <rev/CANSparkMax.h>
 #include <frc/Timer.h>
-#include <frc/Watchdog.h>
 #include <frc2/command/WaitCommand.h>
 
 #include "Drive.h"
@@ -38,6 +37,10 @@ class Robot : public frc::TimedRobot {
  private:
   void ShooterControl();
   void SimpleAuto();
+  void FourShots();
+
+  double flyRPM = 0;
+  double eleSetpoint = 0;
 
   frc::SendableChooser<std::string> m_chooser;
   const std::string kAutoNameDefault = "Default";
@@ -51,8 +54,6 @@ class Robot : public frc::TimedRobot {
   const std::string kTestDrivePID = "Drive PID";
   const std::string kTestAim = "Test Aim";
   std::string TestSelected;
-
-  frc::Watchdog MyWatchdog;
 
   Limelight* MyLimelight;
   Drive* MyDrive;
