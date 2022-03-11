@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <frc/Solenoid.h>
+#include <frc/DoubleSolenoid.h>
 #include "WiringDiagram.h"
 
 extern WiringDiagram MyWiringDiagram;
@@ -16,8 +16,9 @@ class Hanger {
   void Raise();
   void Lower();
   void Toggle();
+  void Init();
 
   bool out;
 
-  frc::Solenoid HangerPiston {frc::PneumaticsModuleType::CTREPCM, MyWiringDiagram.c_HangerPiston};
+  frc::DoubleSolenoid HangerPiston {frc::PneumaticsModuleType::CTREPCM, MyWiringDiagram.c_HangerPistonIn, MyWiringDiagram.c_HangarPistonOut};
 };

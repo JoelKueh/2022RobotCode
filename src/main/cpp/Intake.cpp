@@ -5,31 +5,39 @@ Intake::Intake()
     out = false;
 }
 
-void Intake::Out()
-{
-    IntakePiston.Set(true);
-}
+// void Intake::Out()
+// {
+//     IntakePiston.Set(true);
+// }
 
-void Intake::In()
+// void Intake::In()
+// {
+//     IntakePiston.Set(false);
+// }
+
+void Intake::Init()
 {
-    IntakePiston.Set(false);
+    IntakeMotor.Set(1);
+    IntakePiston.Set(frc::DoubleSolenoid::kReverse);
 }
 
 void Intake::Toggle()
 {
-    if(out)
-    {
-        In();
-        out = false;
-    }
-    else
-    {
-        Out();
-        out = true;
-    }
+    // if(out)
+    // {
+    //     In();
+    //     out = false;
+    // }
+    // else
+    // {
+    //     Out();
+    //     out = true;
+    // }
+
+    IntakePiston.Toggle();
 }
 
-void Intake::Run(int speed)
+void Intake::Run(double speed)
 {
     IntakeMotor.Set(speed);
 }

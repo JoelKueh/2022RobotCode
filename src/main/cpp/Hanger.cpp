@@ -9,24 +9,31 @@ Hanger::Hanger()
     out = false;
 }
 
-void Hanger::Raise()
+void Hanger::Init()
 {
-    HangerPiston.Set(true);
+    HangerPiston.Set(frc::DoubleSolenoid::kReverse);
 }
 
-void Hanger::Lower()
-{
-    HangerPiston.Set(false);
-}
+// void Hanger::Raise()
+// {
+//     HangerPiston.Set(true);
+// }
+
+// void Hanger::Lower()
+// {
+//     HangerPiston.Set(false);
+// }
 
 void Hanger::Toggle()
 {
-    if (out)
-    {
-        Raise();
-    }
-    else
-    {
-        Lower();
-    }
+    // if (out)
+    // {
+    //     Raise();
+    // }
+    // else
+    // {
+    //     Lower();
+    // }
+
+    HangerPiston.Toggle();
 }

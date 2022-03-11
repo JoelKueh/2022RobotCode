@@ -1,6 +1,6 @@
 #pragma once
 
-#include <frc/Solenoid.h>
+#include <frc/DoubleSolenoid.h>
 #include <ctre/phoenix/motorcontrol/can/WPI_VictorSPX.h>
 
 #include "WiringDiagram.h"
@@ -11,15 +11,14 @@ class Intake {
  public:
   Intake();
 
-  frc::Solenoid IntakePiston {frc::PneumaticsModuleType::CTREPCM, MyWiringDiagram.c_IntakePiston};
+  frc::DoubleSolenoid IntakePiston {frc::PneumaticsModuleType::CTREPCM, MyWiringDiagram.c_IntakePistonIn, MyWiringDiagram.c_IntakePistonOut};
   ctre::phoenix::motorcontrol::can::WPI_VictorSPX IntakeMotor {MyWiringDiagram.c_IntakeMotor};
-
-  
 
   bool out;
 
   void Out();
   void In();
   void Toggle();
-  void Run(int speed);
+  void Init();
+  void Run(double speed);
 };
