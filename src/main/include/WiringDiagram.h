@@ -22,9 +22,11 @@ class WiringDiagram {
 
   const int c_IntakeMotor = 0; // CAN
   const int c_PCMID = 0; // CAN
-  const int c_IntakePiston = 0; // CAN
+  const int c_IntakePistonIn = 4; // CAN
+  const int c_IntakePistonOut = 5; // CAN
 
-  const int c_HangerPiston = 1; // CAN
+  const int c_HangerPistonIn = 6; // CAN
+  const int c_HangarPistonOut = 7; // CAN
 
   const int c_Xbox = 0; // Xbox
 };
